@@ -9,14 +9,14 @@ from .models import Post, Group, User, Follow
 def page_not_found(request, exception):
     return render(
         request,
-        "misc/404.html",
-        {"path": request.path},
+        'misc/404.html',
+        {'path': request.path},
         status=404
     )
 
 
 def server_error(request):
-    return render(request, "misc/500.html", status=500)
+    return render(request, 'misc/500.html', status=500)
 
 
 def index(request):
@@ -38,11 +38,11 @@ def group_posts(request, slug):
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
     context = {
-        "group": group,
-        "posts": posts,
+        'group': group,
+        'posts': posts,
         'page': page,
     }
-    return render(request, "group.html", context)
+    return render(request, 'group.html', context)
 
 
 @login_required
@@ -52,8 +52,8 @@ def new_post(request):
         post = form.save(commit=False)
         post.author = request.user
         post.save()
-        return redirect("index")
-    return render(request, "new.html", {"form": form})
+        return redirect('index')
+    return render(request, 'new.html', {'form': form})
 
 
 def profile(request, username):
@@ -125,9 +125,9 @@ def add_comment(request, username, post_id):
             comment.author = request.user
             comment.post = post
             comment.save()
-            return redirect("post", username, post_id)
-    return render(request, "include/comments.html",
-                  {"form": form, 'post': post}
+            return redirect('post', username, post_id)
+    return render(request, 'include/comments.html',
+                  {'form': form, 'post': post}
                   )
 
 
