@@ -112,4 +112,3 @@ class Follow(models.Model):
     class Meta:
         verbose_name = "Подписчик"
         verbose_name_plural = "Подписчики"
-

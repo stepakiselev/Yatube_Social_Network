@@ -84,8 +84,6 @@ class PostPagesTests(TestCase):
         for reverse_name, template in templates_pages_names.items():
             with self.subTest(reverse_name=reverse_name):
                 response = self.authorized_client.get(reverse_name)
-                #print(response, template)
-                #self.assertEqual(response.status_code, 200)
                 self.assertTemplateUsed(response, template)
 
     def test_index_show_correct_context(self):
@@ -329,10 +327,9 @@ class CacheTests(TestCase):
 
     def test_cache_index_page(self):
         """Посты страницы Index хранятся в cash и
-         обновляются каждые 20 сек""" 
+        обновляются каждые 20 сек"""
         response = self.authorized_client.get(reverse('index'))
         content_one = response.content
-
         Post.objects.create(
             text='Тестовый текст 2',
             author=self.user
@@ -346,7 +343,3 @@ class CacheTests(TestCase):
         response = self.authorized_client.get(reverse('index'))
         content_two = response.content
         self.assertNotEqual(content_plus, content_two, 'Caching is clear.')
-
-
-
-

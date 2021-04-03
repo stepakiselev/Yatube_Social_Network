@@ -140,9 +140,6 @@ class PostURLTests(TestCase):
     def test_authorized_add_follow(self):
         """Только авторизированный пользователь
            может комментировать посты"""
-        #self.user = User.objects.create_user(username='not_author')
-        #self.authorized_client = Client()
-        #self.authorized_client.force_login(self.user)
         form_data = {
             'text': 'Тестовый коммент',
         }

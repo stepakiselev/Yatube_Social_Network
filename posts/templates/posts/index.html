@@ -17,7 +17,7 @@
     </div>
 
         {% if page.has_other_pages %}
-            {% include "include/paginator.html "%}
+            {% include "include/paginator.html" with items=page %}
         {% endif %}
 
 {% endblock %}
