@@ -33,6 +33,9 @@ class PostPagesTests(TestCase):
         cls.user = User.objects.create_user(username='Andr')
         cls.authorized_client = Client()
         cls.authorized_client.force_login(cls.user)
+        cls.user2 = get_user_model().objects.create_user(username='user2')
+        cls.authorized_client_2 = Client()
+        cls.authorized_client_2.force_login(cls.user2)
         cls.group = Group.objects.create(
             title='Заголовок',
             slug='Test',
@@ -256,6 +259,29 @@ class PostPagesTests(TestCase):
         post = self.post
         response_post = response.context['posts']
         self.assertNotEqual(post, response_post)
+
+    def test_profile_follow(self):
+        """Авторизованный пользователь может
+         подписываться на других пользователей"""
+        follow_count = Follow.objects.count()
+        response = self.authorized_client.get(
+            reverse('profile_follow', kwargs={'username': 'user2'})
+        )
+        follow_count_again = Follow.objects.all().count()
+        self.assertEqual(follow_count_again, follow_count + 1)
+
+    def test_profile_unfollow(self):
+        """Авторизованный пользователь может
+         отписываться пользователей"""
+        response = self.authorized_client.get(
+            reverse('profile_follow', kwargs={'username': 'user2'})
+        )
+        follow_count = Follow.objects.count()
+        response_two = self.authorized_client.get(
+            reverse('profile_unfollow', kwargs={'username': 'user2'})
+        )
+        follow_count_again = Follow.objects.all().count()
+        self.assertEqual(follow_count_again, follow_count - 1)
 
     def test_follow_show_post(self):
         """Пост попадает на страницу с подписками ."""

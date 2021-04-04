@@ -86,3 +86,16 @@ class PostCreateFormTests(TestCase):
         self.assertEqual(Post.objects.count(), posts_count)
         self.assertTrue(
             Post.objects.filter(text='Изменили запись').exists())
+
+    def test_new_post(self):
+        """Незарегестрированный пользователь
+        не может создать пост."""
+        posts_count = Post.objects.count()
+        form_data = {'text': 'Пост от гостя'}
+        response = self.guest_client.post(
+            reverse('new_post'), data=form_data)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Post.objects.count(), posts_count)
+
+
+

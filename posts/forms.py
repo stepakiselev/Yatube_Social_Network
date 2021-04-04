@@ -14,9 +14,3 @@ class CommentForm(forms.ModelForm):
         model = Comment
         fields = ('text',)
         widget = {'text': forms.Textarea(attrs={'cols': 80, 'rows': 20})}
-
-
-class FollowForm(forms.ModelForm):
-    class Meta:
-        model = Follow
-        fields = ('user', 'author')

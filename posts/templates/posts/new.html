@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}{% if not is_edit %}Новый пост{% else %}Редактирование поста{% endif %}{% endblock %}
+{% block title %}{% if not post %}Новый пост{% else %}Редактирование поста{% endif %}{% endblock %}
 {% block content %}
 
 {% load user_filters %}
@@ -7,7 +7,7 @@
 <div class="row justify-content-center">
     <div class="col-md-8 p-5">
         <div class="card">
-            <div class="card-header">{% if not is_edit %}Добавить запись{% else %}Редактировать запись{% endif %}</div>
+            <div class="card-header">{% if not post %}Добавить запись{% else %}Редактировать запись{% endif %}</div>
             <div class="card-body">
 
                  {% if form.errors %}
@@ -18,7 +18,7 @@
                     {% endfor %}
                  {% endif %}
 
-                {% if not is_edit %}
+                {% if not post %}
 
                 <form method="post" enctype="multipart/form-data" action="{% url 'new_post' %}">
                 {% else %}
@@ -41,7 +41,7 @@
                     {% endfor %}
                     <div class="col-md-6 offset-md-4">
                             <button type="submit" class="btn btn-primary">
-                                {% if not is_edit %}Добавить статью{% else %}Сохраниить{% endif %}
+                                {% if not post %}Добавить статью{% else %}Сохраниить{% endif %}
                             </button>
                     </div>
                 </form>

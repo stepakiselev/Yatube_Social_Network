@@ -61,10 +61,12 @@ def profile(request, username):
     # берем посты по related_name
     posts = author.posts.all()
     number_posts = author.posts.count()
-    # я предпологал, что так прощее, типа лишний раз не лезть в базу
     following = request.user.is_authenticated and Follow.objects.filter(
         user=request.user,
         author=author).exists()
+    user = get_object_or_404(User, username=username)
+    sub_count = Follow.objects.filter(user=user).count()
+    sub_count_2 = Follow.objects.filter(author=user).count()
     paginator = Paginator(posts, 5)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
@@ -73,7 +75,9 @@ def profile(request, username):
         'posts': posts,
         'page': page,
         'number_posts': number_posts,
-        'following': following
+        'following': following,
+        'sub_count': sub_count,
+        'sub_count_2': sub_count_2
     }
     return render(request, 'profile.html', context)
 
@@ -85,12 +89,17 @@ def post_view(request, username, post_id):
     comments = post.comments.all()
     author = post.author
     number_posts = author.posts.count()
+    user = get_object_or_404(User, username=username)
+    sub_count = Follow.objects.filter(user=user).count()
+    sub_count_2 = Follow.objects.filter(author=user).count()
     context = {
         'author': author,
         'post': post,
         'form': form,
         'comments': comments,
-        'number_posts': number_posts
+        'number_posts': number_posts,
+        'sub_count': sub_count,
+        'sub_count_2': sub_count_2
     }
     return render(request, 'post.html', context)
 
@@ -102,7 +111,6 @@ def post_edit(request, username, post_id):
                     files=request.FILES or None,
                     instance=post
                     )
-    is_edit = 'dd'
     if post.author != request.user:
         return redirect('post', username=username, post_id=post.id)
     if request.method == 'POST':
@@ -111,7 +119,7 @@ def post_edit(request, username, post_id):
             return redirect('post', username=username, post_id=post.id)
     return render(
         request, 'new.html',
-        {'post': post, 'form': form, 'is_edit': is_edit}
+        {'post': post, 'form': form}
     )
 
 

@@ -123,12 +123,10 @@ class PostURLTests(TestCase):
             data=form_data,
             follow=True)
         self.assertRedirects(response,
-                             reverse('post',
-                                     kwargs={
+                             reverse('post', kwargs={
                                          'username': self.post.author,
                                          'post_id': self.post.id
-                                     }
-                                     )
+                             })
                              )
         # Если False, то запись не обновилась
         self.assertFalse(
@@ -137,8 +135,8 @@ class PostURLTests(TestCase):
             ).exists()
         )
 
-    def test_authorized_add_follow(self):
-        """Только авторизированный пользователь
+    def test_authorized_add_comment(self):
+        """Авторизированный пользователь
            может комментировать посты"""
         form_data = {
             'text': 'Тестовый коммент',
@@ -155,11 +153,29 @@ class PostURLTests(TestCase):
                                      kwargs={
                                          'username': self.post.author,
                                          'post_id': self.post.id
-                                     }
-                                     )
+                                     })
                              )
         # Если False, то запись не обновилась
         self.assertTrue(
+            Comment.objects.filter(
+                text='Тестовый коммент',
+            ).exists()
+        )
+
+    def test_not_authorized_add_comment(self):
+        """Только авторизированный пользователь
+           может комментировать посты"""
+        form_data = {
+            'text': 'Тестовый коммент',
+        }
+        response = self.guest_client.post(
+            reverse('add_comment', kwargs={'username': self.post.author,
+                                           'post_id': self.post.id
+                                           }),
+            data=form_data,
+            follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(
             Comment.objects.filter(
                 text='Тестовый коммент',
             ).exists()
@@ -180,8 +196,7 @@ class PostURLTests(TestCase):
                                            kwargs={
                                                'username': self.post.author,
                                                'post_id': self.post.id
-                                           }
-                                           )
+                                           })
         )
 
     def test_new_list_url_redirect_anonymous(self):
