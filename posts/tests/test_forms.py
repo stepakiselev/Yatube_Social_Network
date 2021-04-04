@@ -96,6 +96,3 @@ class PostCreateFormTests(TestCase):
             reverse('new_post'), data=form_data)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(Post.objects.count(), posts_count)
-
-
-

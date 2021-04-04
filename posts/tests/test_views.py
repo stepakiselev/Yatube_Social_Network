@@ -264,7 +264,7 @@ class PostPagesTests(TestCase):
         """Авторизованный пользователь может
          подписываться на других пользователей"""
         follow_count = Follow.objects.count()
-        response = self.authorized_client.get(
+        self.authorized_client.get(
             reverse('profile_follow', kwargs={'username': 'user2'})
         )
         follow_count_again = Follow.objects.all().count()
@@ -273,11 +273,11 @@ class PostPagesTests(TestCase):
     def test_profile_unfollow(self):
         """Авторизованный пользователь может
          отписываться пользователей"""
-        response = self.authorized_client.get(
+        self.authorized_client.get(
             reverse('profile_follow', kwargs={'username': 'user2'})
         )
         follow_count = Follow.objects.count()
-        response_two = self.authorized_client.get(
+        self.authorized_client.get(
             reverse('profile_unfollow', kwargs={'username': 'user2'})
         )
         follow_count_again = Follow.objects.all().count()

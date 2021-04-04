@@ -123,11 +123,10 @@ class PostURLTests(TestCase):
             data=form_data,
             follow=True)
         self.assertRedirects(response,
-                             reverse('post', kwargs={
-                                         'username': self.post.author,
-                                         'post_id': self.post.id
-                             })
-                             )
+                             reverse('post',
+                                     kwargs={'username': self.post.author,
+                                             'post_id': self.post.id}
+                                     ))
         # Если False, то запись не обновилась
         self.assertFalse(
             Post.objects.filter(
