@@ -6,3 +6,4 @@ Social network for bloggers
 ***
 ### REQUIREMENTS
 If your application passes check-requirements, then you have a high degree of assurance that it correctly and fully pins its requirements.
+Checks for requirements listed in `requirements.txt`
