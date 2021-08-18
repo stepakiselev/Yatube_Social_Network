@@ -4,7 +4,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = '+!-d@=&#th2-ym)&zac=f$2dymny*vfl&ctcd+y#v(^m8tiju='
 
-DEBUG = True
+DEBUG = False
 
 CACHES = {
     'default': {
